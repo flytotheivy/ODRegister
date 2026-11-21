@@ -1,0 +1,127 @@
+{
+  "format": "layer1-themes/1",
+  "version": "themes-v1",
+  "codes_source": "TECHNICAL_SPEC_KO.md §5; agreed R2 D6/R4 seed",
+  "vocabulary_source": "https://op.europa.eu/en/web/eu-vocabularies/dataset/-/resource?uri=http://publications.europa.eu/resource/dataset/data-theme",
+  "translation_status": "draft_pending_ite_review",
+  "production_approved": false,
+  "themes": [
+    {
+      "code": "AGRI",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/AGRI",
+      "labels": {
+        "en": "Agriculture, fisheries, forestry and food",
+        "sr-Latn": "Poljoprivreda, ribarstvo, šumarstvo i hrana",
+        "sr-Cyrl": "Пољопривреда, рибарство, шумарство и храна"
+      }
+    },
+    {
+      "code": "ECON",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/ECON",
+      "labels": {
+        "en": "Economy and finance",
+        "sr-Latn": "Ekonomija i finansije",
+        "sr-Cyrl": "Економија и финансије"
+      }
+    },
+    {
+      "code": "EDUC",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/EDUC",
+      "labels": {
+        "en": "Education, culture and sport",
+        "sr-Latn": "Obrazovanje, kultura i sport",
+        "sr-Cyrl": "Образовање, култура и спорт"
+      }
+    },
+    {
+      "code": "ENER",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/ENER",
+      "labels": {
+        "en": "Energy",
+        "sr-Latn": "Energetika",
+        "sr-Cyrl": "Енергетика"
+      }
+    },
+    {
+      "code": "ENVI",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/ENVI",
+      "labels": {
+        "en": "Environment",
+        "sr-Latn": "Životna sredina",
+        "sr-Cyrl": "Животна средина"
+      }
+    },
+    {
+      "code": "GOVE",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/GOVE",
+      "labels": {
+        "en": "Government and public sector",
+        "sr-Latn": "Vlada i javni sektor",
+        "sr-Cyrl": "Влада и јавни сектор"
+      }
+    },
+    {
+      "code": "HEAL",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/HEAL",
+      "labels": {
+        "en": "Health",
+        "sr-Latn": "Zdravlje",
+        "sr-Cyrl": "Здравље"
+      }
+    },
+    {
+      "code": "INTR",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/INTR",
+      "labels": {
+        "en": "International issues",
+        "sr-Latn": "Međunarodna pitanja",
+        "sr-Cyrl": "Међународна питања"
+      }
+    },
+    {
+      "code": "JUST",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/JUST",
+      "labels": {
+        "en": "Justice, legal system and public safety",
+        "sr-Latn": "Pravosuđe, pravni sistem i javna bezbednost",
+        "sr-Cyrl": "Правосуђе, правни систем и јавна безбедност"
+      }
+    },
+    {
+      "code": "SOCI",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/SOCI",
+      "labels": {
+        "en": "Population and society",
+        "sr-Latn": "Stanovništvo i društvo",
+        "sr-Cyrl": "Становништво и друштво"
+      }
+    },
+    {
+      "code": "REGI",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/REGI",
+      "labels": {
+        "en": "Regions and cities",
+        "sr-Latn": "Regioni i gradovi",
+        "sr-Cyrl": "Региони и градови"
+      }
+    },
+    {
+      "code": "TECH",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/TECH",
+      "labels": {
+        "en": "Science and technology",
+        "sr-Latn": "Nauka i tehnologija",
+        "sr-Cyrl": "Наука и технологија"
+      }
+    },
+    {
+      "code": "TRAN",
+      "uri": "http://publications.europa.eu/resource/authority/data-theme/TRAN",
+      "labels": {
+        "en": "Transport",
+        "sr-Latn": "Saobraćaj",
+        "sr-Cyrl": "Саобраћај"
+      }
+    }
+  ]
+}

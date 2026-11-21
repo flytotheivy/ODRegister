@@ -6,6 +6,9 @@
       "excludeFiles": "{.data/**,.venv/**,.git/**,frontend/**,tests/**,test-data/**,reference/**,contracts/**,scripts/**,infra/**,**/__pycache__/**,backend/migrations/**,build.py,Makefile,*.md,.env,.env.*}"
     }
   },
+  "regions": [
+    "fra1"
+  ],
   "git": {
     "deploymentEnabled": false
   }

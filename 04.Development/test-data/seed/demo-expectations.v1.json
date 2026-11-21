@@ -1,0 +1,111 @@
+{
+  "format": "layer1-demo-expectations/1",
+  "synthetic": true,
+  "version": "demo-v1",
+  "year": 2027,
+  "institutions": 7,
+  "accounts": {
+    "institution_users": 5,
+    "administrators": 2,
+    "approved_institutions": 3,
+    "pending_institutions": 1,
+    "rejected_institutions": 1,
+    "registered_institutions": 5
+  },
+  "plans": {
+    "submitted": 1,
+    "draft": 2,
+    "no_plan": 4,
+    "total": 3,
+    "zero_item_draft": 1
+  },
+  "items": {
+    "submitted": 2,
+    "draft": 1,
+    "total": 3
+  },
+  "submission_rate_numerator": 1,
+  "submission_rate_denominator": 7,
+  "not_submitted": 6,
+  "reply_groups": {
+    "registered_with_reply": 2,
+    "registered_without_reply": 3,
+    "reply_without_registration": 1,
+    "neither": 1
+  },
+  "official_reply_rows": [
+    {
+      "key": "i1",
+      "received": true
+    },
+    {
+      "key": "i2",
+      "received": false
+    },
+    {
+      "key": "i3",
+      "received": true
+    },
+    {
+      "key": "i4",
+      "received": false
+    },
+    {
+      "key": "i5",
+      "received": true
+    },
+    {
+      "key": "i6",
+      "received": false
+    },
+    {
+      "key": "i7",
+      "received": false
+    }
+  ],
+  "expected_institutions": {
+    "i1": {
+      "account": "approved",
+      "plan": "submitted",
+      "group": "registered_with_reply"
+    },
+    "i2": {
+      "account": "approved",
+      "plan": "draft",
+      "group": "registered_without_reply"
+    },
+    "i3": {
+      "account": "pending",
+      "plan": "no_plan",
+      "group": "registered_with_reply"
+    },
+    "i4": {
+      "account": "rejected",
+      "plan": "no_plan",
+      "group": "registered_without_reply"
+    },
+    "i5": {
+      "account": null,
+      "plan": "no_plan",
+      "group": "reply_without_registration"
+    },
+    "i6": {
+      "account": null,
+      "plan": "no_plan",
+      "group": "neither"
+    },
+    "i7": {
+      "account": "approved",
+      "plan": "draft",
+      "group": "registered_without_reply"
+    }
+  },
+  "blocked_request_attempts": [
+    {
+      "institution_key": "i6",
+      "email": "blocked@consumer-mail.example.invalid",
+      "recorded": false,
+      "reason": "synthetic private-mail rejection scenario; P2 policy implementation pending"
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 """Process-local bounded candidate or per-probe NullPool. No business/session state."""
 
 import hashlib
+import ssl
+from pathlib import Path
 from threading import RLock
 
 from sqlalchemy import create_engine
@@ -21,6 +23,25 @@ def dispose_pool():
         _cached_key = None
 
 
+def portable_certificate_url(url):
+    """Resolve system CA bundles across macOS/Linux binary libpq distributions."""
+    if url.query.get("sslrootcert") != "system":
+        return url
+    candidates = [
+        ssl.get_default_verify_paths().cafile,
+        "/etc/ssl/cert.pem",
+        "/etc/ssl/certs/ca-certificates.crt",
+        "/etc/pki/tls/certs/ca-bundle.crt",
+    ]
+    for candidate in candidates:
+        if candidate and Path(candidate).is_file():
+            return url.set(
+                query={**url.query, "sslrootcert": candidate, "sslmode": "verify-full"}
+            )
+    # Preserve libpq's own system resolution; certificate verification stays enabled.
+    return url
+
+
 def connection_engine(settings):
     global _cached_engine, _cached_key
     if settings.database_url is None:
@@ -29,6 +50,7 @@ def connection_engine(settings):
     url = make_url(raw)
     if url.drivername not in ("postgresql", "postgresql+psycopg"):
         raise ValueError("unsupported runtime driver")
+    url = portable_certificate_url(url)
     options = {
         "echo": False,
         "hide_parameters": True,

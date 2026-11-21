@@ -12,3 +12,12 @@
 - Automatic Git deployments are disabled in the root and application Vercel configuration pending manual review and actual project settings verification. See [Vercel Git configuration](https://vercel.com/docs/project-configuration/git-configuration).
 - Excluded: local databases, dumps, credentials, private customer documents, manual-test data and generated UI bundles.
 - This source does not contain the project internal development ledger, local test fixture utilities or a full handover package. The working project retains these separately.
+
+## Preview operator tools
+
+- Explicit remote preview installers and credential tests are under `04.Development/scripts/db/` and `04.Development/tests/db/`.
+- The synthetic seed is authorized only for the named, isolated preview. It uses immutable generated data, preserves passwords on re-entry and refuses unrecognized or populated targets. Never use it as a production reference import.
+- [Remote preview installation guide](docs/REMOTE_PREVIEW_DB_EN.md).
+- Updated app TLS handling resolves system CA bundles across macOS/Linux while preserving hostname verification.
+- The temporary Vercel Function region is `fra1`; final operating provider/region remain undecided.
+- Deployment publication requires the account holder's Vercel identity verification. Staging these files does not mean a deployment has succeeded.
