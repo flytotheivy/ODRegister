@@ -1,0 +1,21 @@
+import type { Messages } from './en';
+export const srLatn = {
+  brand: 'Otvoreni podaci Srbije', preview: 'Razvojni pregled', language: 'Jezik',
+  eyebrow: 'Godišnje planiranje objavljivanja', title: 'Otvoreni podaci počinju\nplanom.',
+  introduction: 'Zajedničko mesto za pripremu godišnjih planova objavljivanja otvorenih podataka institucija.',
+  scope: "Zahtevi za pristup institucije i prijava dostupni su u prototipu. Predaja planova i javni pregled slede kasnije.",
+  statusHeading: 'Provera veze', statusIntro: 'Proverite da li ovaj pregled može da pristupi pratećim servisima.',
+  loading: 'Provera veze…', ready: 'Veza je uspostavljena', unavailable: 'Veza nije dostupna',
+  readyHint: 'Aplikacija i njena baza podataka odgovaraju.',
+  unavailableHint: 'Prateći servis nije dostupan. Pokušajte ponovo.',
+  invalidHint: 'Servis je vratio neočekivan odgovor. Pokušajte ponovo.',
+  timeoutHint: 'Provera veze je trajala predugo. Pokušajte ponovo.',
+  api: 'Aplikacioni servis', database: 'Veza sa bazom podataka', ok: 'Dostupno', unknown: 'Nije potvrđeno',
+  refresh: 'Proveri ponovo', statusLabel: 'Status veze sa servisima',
+  stepsHeading: 'Jedan godišnji plan. Jasniji put do objavljivanja.',
+  accessTitle: 'Zatražite pristup', accessBody: 'Administrator će pregledati zahtev za pristup institucije.',
+  planTitle: 'Pripremite plan', planBody: 'Opišite skupove podataka koje vaša institucija namerava da objavi.',
+  publishTitle: 'Podelite planove', publishBody: 'Podneti planovi biće dostupni za javni pregled.',
+  later: 'Naredna faza', footer: 'Prototip · Isključivo sintetički demonstracioni podaci',
+  draft: 'Nacrt prevoda · Čeka proveru', skip: 'Pređi na glavni sadržaj',
+} satisfies Messages;

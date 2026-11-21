@@ -1,0 +1,42 @@
+# 비밀값·개인 설정
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+.idea/
+.vscode/
+
+# 의존성·실행 데이터
+.venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+dist/
+build/
+coverage/
+.data/
+logs/
+*.log
+*.dump
+*.backup
+*.sql.gz
+
+# 로컬 배포 식별자·생성 결과
+.vercel/
+.openai/
+test-results/
+playwright-report/
+06.Deliverables/release/staging/
+06.Deliverables/release/packages/
+
+# 검수된 비식별 증거는 evidence/에 명시적으로 보관
+
+# Generated provider-independent UI bundle
+04.Development/web/
+04.Development/backend/web_manifest.json

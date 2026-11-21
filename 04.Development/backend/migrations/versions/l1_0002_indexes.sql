@@ -1,0 +1,26 @@
+-- Immutable migration snapshot, derived from physical design v0.1. No seed.
+CREATE INDEX ix_institution_register ON layer1.institution (register_version_id);
+CREATE INDEX ix_ci_institution ON layer1.cycle_institution (institution_id);
+CREATE INDEX ix_ci_register ON layer1.cycle_institution (register_version_id);
+CREATE INDEX ix_ci_group ON layer1.cycle_institution (cycle_id, institution_type, institution_level, institution_region);
+CREATE UNIQUE INDEX uq_account_active_approved ON layer1.account (institution_id) WHERE role = 'institution_user' AND status = 'approved' AND inactive_at IS NULL;
+CREATE INDEX ix_account_institution ON layer1.account (institution_id);
+CREATE INDEX ix_account_reviewed_by ON layer1.account (reviewed_by);
+CREATE INDEX ix_account_policy ON layer1.account (institution_id, domain_policy_id);
+CREATE INDEX ix_account_queue ON layer1.account (status, requested_at);
+CREATE UNIQUE INDEX uq_domain_active ON layer1.institution_email_domain (institution_id, normalized_domain) WHERE active;
+CREATE INDEX ix_domain_reviewer ON layer1.institution_email_domain (verified_by);
+CREATE INDEX ix_session_account ON layer1.session (account_id);
+CREATE INDEX ix_session_expiry ON layer1.session (absolute_expires_at);
+CREATE INDEX ix_recovery_account ON layer1.account_recovery_grant (account_id);
+CREATE INDEX ix_recovery_issuer ON layer1.account_recovery_grant (issued_by);
+CREATE INDEX ix_recovery_expiry ON layer1.account_recovery_grant (expires_at);
+CREATE INDEX ix_cycle_theme_theme ON layer1.cycle_theme (theme_id);
+CREATE INDEX ix_plan_public ON layer1.plan (cycle_id, status, institution_id, id);
+CREATE INDEX ix_dataset_theme ON layer1.planned_dataset (theme_id, plan_id);
+CREATE INDEX ix_dataset_confirmer ON layer1.planned_dataset (confirmed_by);
+CREATE INDEX ix_revision_saver ON layer1.plan_revision (saved_by);
+CREATE INDEX ix_audit_time ON layer1.audit_event (occurred_at);
+CREATE INDEX ix_audit_entity ON layer1.audit_event (entity_type, entity_id, occurred_at);
+CREATE INDEX ix_audit_actor ON layer1.audit_event (actor_id, occurred_at);
+CREATE INDEX ix_audit_request ON layer1.audit_event (request_id);

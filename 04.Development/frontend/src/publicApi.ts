@@ -1,0 +1,20 @@
+import {AuthError,authFetch} from './authApi.ts';
+export type PublicCycle={year:number;opens_at:string;closes_at:string;timezone:string;licence_text:string;licence_url:string;server_now:string;window_state:string};
+export type PublicTheme={id:string;code:string;labels:Record<string,string>};
+export type PublicPlan={id:string;year:number;institution:{id:string;name:string;institution_type:string|null;institution_level:string|null;institution_region:string|null};first_submitted_at:string;updated_at:string;item_count:number;themes:PublicTheme[]};
+export type PublicCatalogue={cycles:PublicCycle[];themes:PublicTheme[]};
+export type PublicPage={cycle:PublicCycle;items:PublicPlan[];total:number;page:number;page_size:number;has_next:boolean};
+export type PublicDetail={cycle:PublicCycle;plan:PublicPlan;items:{id:string;title:string;description:string|null;responsible_department:string|null;planned_quarter:number|null;theme:PublicTheme;personal_data_confirmation:boolean}[]};
+const uuid=(v:unknown)=>typeof v==='string'&&/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/.test(v);
+const instant=(v:unknown)=>typeof v==='string'&&Number.isFinite(Date.parse(v));
+const theme=(v:PublicTheme)=>!!v&&uuid(v.id)&&typeof v.code==='string'&&!!v.labels&&['en','sr-Latn','sr-Cyrl'].every(l=>typeof v.labels[l]==='string');
+const cycle=(v:PublicCycle)=>!!v&&Number.isSafeInteger(v.year)&&instant(v.opens_at)&&instant(v.closes_at)&&instant(v.server_now)&&typeof v.timezone==='string'&&typeof v.licence_text==='string'&&typeof v.licence_url==='string'&&['scheduled','open','closed'].includes(v.window_state);
+const plan=(v:PublicPlan)=>!!v&&uuid(v.id)&&Number.isSafeInteger(v.year)&&!!v.institution&&uuid(v.institution.id)&&typeof v.institution.name==='string'&&['institution_type','institution_level','institution_region'].every(k=>v.institution[k as 'institution_type']===null||typeof v.institution[k as 'institution_type']==='string')&&instant(v.first_submitted_at)&&instant(v.updated_at)&&Number.isSafeInteger(v.item_count)&&v.item_count>0&&Array.isArray(v.themes)&&v.themes.every(theme);
+export function publicCatalogue(v:unknown):PublicCatalogue{const x=v as PublicCatalogue;if(!x||!Array.isArray(x.cycles)||!x.cycles.every(cycle)||!Array.isArray(x.themes)||!x.themes.every(theme))throw new AuthError('SERVICE_UNAVAILABLE');return x;}
+export function publicPage(v:unknown):PublicPage{const x=v as PublicPage;if(!x||!cycle(x.cycle)||!Array.isArray(x.items)||!x.items.every(plan)||!Number.isSafeInteger(x.total)||x.total<0||!Number.isSafeInteger(x.page)||x.page<1||!Number.isSafeInteger(x.page_size)||x.page_size<1||x.page_size>100||x.items.length>x.page_size||typeof x.has_next!=='boolean')throw new AuthError('SERVICE_UNAVAILABLE');return x;}
+export function publicDetail(v:unknown):PublicDetail{const x=v as PublicDetail;if(!x||!cycle(x.cycle)||!plan(x.plan)||!Array.isArray(x.items)||x.items.length!==x.plan.item_count||!x.items.every(i=>!!i&&uuid(i.id)&&typeof i.title==='string'&&theme(i.theme)&&['description','responsible_department'].every(k=>i[k as 'description']===null||typeof i[k as 'description']==='string')&&(i.planned_quarter===null||(Number.isInteger(i.planned_quarter)&&i.planned_quarter>=1&&i.planned_quarter<=4))&&i.personal_data_confirmation===true))throw new AuthError('SERVICE_UNAVAILABLE');return x;}
+export function publicQuery(params:URLSearchParams,year:number,page=1){const q=new URLSearchParams({year:String(year),page:String(page)});for(const k of ['q','theme_id','page_size']){const v=params.get(k);if(v)q.set(k,v);}return q;}
+export function safeLicence(url:string){try{const u=new URL(url);return ['http:','https:'].includes(u.protocol)?u.href:null;}catch{return null;}}
+export async function loadPublic<T>(path:string,parse:(v:unknown)=>T,signal:AbortSignal){return parse(await authFetch('public/'+path,undefined,undefined,signal));}
+
+export function publicFeedUrl(year:number){if(!Number.isSafeInteger(year)||year<2000||year>2100)throw new AuthError('INVALID_REQUEST');return '/api/public/feeds/'+year+'.json';}
