@@ -1,3 +1,4 @@
+import HomePlanMotion from './HomePlanMotion';
 import PublicStatistics from './PublicStatistics';
 import SiteHeader,{SiteFooter,uiMessages} from './SiteHeader';
 import {Breadcrumbs,Chip} from './Eds';
@@ -24,7 +25,8 @@ export default function PublicPortal(){
  const crumbs:Array<[string,string?]>=home?[]:detailId?[[u.home,href('/')],[t.list,href('/plans?'+backParams)],[detail?.plan.institution.name||t.detail]]:[[u.home,href('/')],[t.list]];
  const steps:Array<[string,string,string]>=[[h.actorInstitution,h.step1,h.step1body],[h.actorAdmin,h.step2,h.step2body],[h.actorInstitution,h.step3,h.step3body],[h.actorPublic,h.step4,h.step4body]];
  return <><a className="skip" href="#main">{b.skip}</a><div className="site"><SiteHeader locale={locale} onLocale={setLocale}/><main id="main" className="public-main">
- {!home&&<Breadcrumbs label={h.crumbs} items={crumbs}/>}<p className="synthetic-note">{b.footer}</p>
+ {!home&&<><Breadcrumbs label={h.crumbs} items={crumbs}/><p className="synthetic-note">{b.footer}</p></>}
+ {home&&<HomePlanMotion locale={locale}/>}
  {home?<div className="public-hero"><section className="hero-text"><p className="eyebrow">{h.heroEyebrow}</p><h1>{h.heroTitle}</h1><p className="lead">{h.heroLead}</p><div className="button-row"><a className="access-link" href={href('/plans')}>{t.browse}</a><a className="access-link secondary" href={href('/account/request')}>{b.accessTitle}</a></div></section>{cy&&<aside className="public-period" aria-label={t.period}>{period(cy)}<p className="period-cta"><span>{h.periodFor}</span><a href={href('/sign-in')}>{h.periodCta}</a></p></aside>}</div>
  :<div className="page-header"><div className="page-header-text"><p className="eyebrow">{detailId?t.detail:b.eyebrow}</p><h1>{detail?detail.plan.institution.name:t.list}{(detail||page)&&cy&&<> <span className="year-chip">{cy.year}</span></>}</h1>{!detailId&&<p className="lead">{h.publicBody}</p>}</div></div>}
  {loading&&<p role="status" className="loading-line">{t.loading}</p>}{error&&<div role="alert" className="access-error"><p>{error==='NOT_FOUND'?t.missing:error==='INVALID_REQUEST'?t.invalid:t.unavailable}</p><button className="outline-button" type="button" onClick={()=>setAttempt(x=>x+1)}>{t.retry}</button></div>}

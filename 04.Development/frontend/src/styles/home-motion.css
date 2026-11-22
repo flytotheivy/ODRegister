@@ -1,0 +1,106 @@
+/* Original MVP v0.3 animation rules; scoped to the home illustration. */
+.annual-plan-motion { margin: 32px 0 40px; }
+.annual-plan-motion .motion-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; }
+.annual-plan-motion h2 { margin:0; }
+.annual-plan-motion .motion-control { flex-shrink:0; }
+.annual-plan-motion .motion-card { margin:0; padding:20px; border:1px solid var(--c-line); border-radius:8px; background:var(--c-surface); }
+.annual-plan-motion .motion-svg { display:block; width:100%; height:auto; max-height:230px; }
+.annual-plan-motion .m-txt { font-family:Arial,sans-serif; font-size:12px; font-weight:600; }
+.annual-plan-motion .m-txt.b { font-weight:700; }
+.annual-plan-motion .m-txt.s { font-size:9.5px; }
+.annual-plan-motion .motion-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:16px; }
+.annual-plan-motion .ms { display:flex; align-items:center; gap:10px; padding:12px; border-radius:6px; color:var(--c-text); font-size:18px; font-weight:600; line-height:1.5; }
+.annual-plan-motion .ms b { flex:none; display:grid; place-items:center; width:32px; height:32px; border-radius:50%; color:var(--c-text-muted); background:var(--c-surface-muted); font-size:16px; }
+.annual-plan-motion .motion-note { color:var(--c-text-muted); font-size:16px; margin-top:12px; }
+.annual-plan-motion .motion-svg .m-gear, .annual-plan-motion .motion-svg .m-check, .annual-plan-motion .motion-svg .m-badge, .annual-plan-motion .motion-svg .m-toast, .annual-plan-motion .motion-svg .m-bar, .annual-plan-motion .motion-svg .m-doc, .annual-plan-motion .motion-svg .m-type, .annual-plan-motion .motion-svg .m-nod {
+  transform-box: fill-box; transform-origin: center;
+}
+.annual-plan-motion .motion-svg .m-bar { transform-origin: center bottom; }
+.annual-plan-motion .motion-svg .m-type { transform-origin: left center; }
+.annual-plan-motion .motion-svg .m-nod { transform-origin: right center; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .annual-plan-motion .motion-svg *, .annual-plan-motion .motion-steps * , .annual-plan-motion .motion-steps .ms { animation-fill-mode: both; }
+  .annual-plan-motion .motion-svg .m-gear { animation: annualPlanGear 6s linear infinite; }
+  .annual-plan-motion .motion-svg .m-gear.rev { animation-direction: reverse; animation-duration: 4.5s; }
+  .annual-plan-motion .motion-svg .m-type { animation: annualPlanType 10s ease-in-out infinite; }
+  .annual-plan-motion .motion-svg .m-float { animation: annualPlanFloat 3s ease-in-out infinite; }
+  .annual-plan-motion .motion-svg .m-doc { animation: annualPlanDoc 10s ease-in-out infinite; }
+  .annual-plan-motion .motion-svg .m-newrow { animation: annualPlanNewRow 10s ease-out infinite; }
+  .annual-plan-motion .motion-svg .m-scan { animation: annualPlanScan 10s linear infinite; }
+  .annual-plan-motion .motion-svg .m-check { animation: annualPlanCheck1 10s ease-out infinite; }
+  .annual-plan-motion .motion-svg .m-check.c2 { animation-name: annualPlanCheck2; }
+  .annual-plan-motion .motion-svg .m-check.c3 { animation-name: annualPlanCheck3; }
+  .annual-plan-motion .motion-svg .m-badge { animation: annualPlanBadge 10s ease-out infinite; }
+  .annual-plan-motion .motion-svg .m-pkt { animation: annualPlanPkt 10s ease-in-out infinite; }
+  .annual-plan-motion .motion-svg .m-pkt.p2 { animation-delay: 0.25s; }
+  .annual-plan-motion .motion-svg .m-pkt.p3 { animation-delay: 0.5s; }
+  .annual-plan-motion .motion-svg .m-bar { animation: annualPlanBar 10s ease-out infinite; }
+  .annual-plan-motion .motion-svg .m-bar.b2 { animation-delay: 0.1s; }
+  .annual-plan-motion .motion-svg .m-bar.b3 { animation-delay: 0.2s; }
+  .annual-plan-motion .motion-svg .m-bar.b4 { animation-delay: 0.3s; }
+  .annual-plan-motion .motion-svg .m-toast { animation: annualPlanToast 10s ease-out infinite; }
+  .annual-plan-motion .motion-svg .m-nod { animation: annualPlanNod 10s ease-in-out infinite; }
+  .annual-plan-motion .motion-svg .m-tick { stroke-dasharray: 22; animation: annualPlanTick1 10s ease-out infinite; }
+  .annual-plan-motion .motion-svg .m-tick.t2 { animation-name: annualPlanTick2; }
+  .annual-plan-motion .motion-svg .m-tick.t3 { animation-name: annualPlanTick3; }
+  .annual-plan-motion .motion-steps .s1 { animation: annualPlanStep1 10s infinite; }
+  .annual-plan-motion .motion-steps .s2 { animation: annualPlanStep2 10s infinite; }
+  .annual-plan-motion .motion-steps .s3 { animation: annualPlanStep3 10s infinite; }
+  .annual-plan-motion .motion-steps .s1 b { animation: annualPlanStepB1 10s infinite; }
+  .annual-plan-motion .motion-steps .s2 b { animation: annualPlanStepB2 10s infinite; }
+  .annual-plan-motion .motion-steps .s3 b { animation: annualPlanStepB3 10s infinite; }
+}
+@media (prefers-reduced-motion: reduce) { .annual-plan-motion .motion-svg .m-doc, .annual-plan-motion .motion-svg .m-scan, .annual-plan-motion .motion-svg .m-pkt { opacity: 0; } }
+
+@keyframes annualPlanGear { to { transform: rotate(360deg); } }
+@keyframes annualPlanFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+/* scene 1: typing 0–14%, plan flies 14–34% */
+@keyframes annualPlanType {
+  0%, 2%, 6%, 10%, 14%, 100% { transform: rotate(0deg); }
+  4%, 8%, 12% { transform: rotate(-4deg); }
+}
+@keyframes annualPlanDoc {
+  0%, 12% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+  15% { opacity: 1; transform: translate(0, 0) scale(1); }
+  24% { opacity: 1; transform: translate(150px, -52px) scale(0.95) rotate(-6deg); }
+  33% { opacity: 1; transform: translate(290px, 6px) scale(0.6); }
+  35%, 100% { opacity: 0; transform: translate(290px, 6px) scale(0.4); }
+}
+/* scene 2: row lands 34%, scan 36–50%, checks 40–48%, badge 53% */
+@keyframes annualPlanNewRow { 0%, 33% { opacity: 0; } 36%, 94% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes annualPlanScan { 0%, 36% { opacity: 0; transform: translateY(0); } 37% { opacity: 1; transform: translateY(0); } 50% { opacity: 1; transform: translateY(80px); } 51%, 100% { opacity: 0; transform: translateY(80px); } }
+@keyframes annualPlanCheck1 { 0%, 40% { opacity: 0; transform: scale(0); } 42% { opacity: 1; transform: scale(1.25); } 44%, 94% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+@keyframes annualPlanCheck2 { 0%, 44% { opacity: 0; transform: scale(0); } 46% { opacity: 1; transform: scale(1.25); } 48%, 94% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+@keyframes annualPlanCheck3 { 0%, 48% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1.25); } 52%, 94% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+@keyframes annualPlanBadge { 0%, 52% { opacity: 0; transform: scale(0.3); } 55% { opacity: 1; transform: scale(1.12); } 57%, 94% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+/* scene 3: packets 58–68%, dashboard 68–80%, ticks 78–88% */
+@keyframes annualPlanPkt { 0%, 58% { opacity: 0; transform: translate(0, 0); } 59% { opacity: 1; } 66% { opacity: 1; transform: translate(130px, -14px); } 68%, 100% { opacity: 0; transform: translate(140px, -14px); } }
+@keyframes annualPlanBar { 0%, 67% { transform: scaleY(0.25); } 76%, 94% { transform: scaleY(1); } 100% { transform: scaleY(0.25); } }
+@keyframes annualPlanToast { 0%, 68% { opacity: 0; transform: translateY(6px) scale(0.6); } 71% { opacity: 1; transform: translateY(0) scale(1.1); } 73%, 94% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; } }
+@keyframes annualPlanNod { 0%, 70%, 100% { transform: rotate(0deg); } 74%, 82% { transform: rotate(4deg); } 78%, 86% { transform: rotate(0deg); } }
+@keyframes annualPlanTick1 { 0%, 77% { stroke-dashoffset: 22; } 80%, 94% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 22; } }
+@keyframes annualPlanTick2 { 0%, 81% { stroke-dashoffset: 22; } 84%, 94% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 22; } }
+@keyframes annualPlanTick3 { 0%, 85% { stroke-dashoffset: 22; } 88%, 94% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 22; } }
+/* captions follow the scenes */
+@keyframes annualPlanStep1 { 0%, 33% { background: #eaf1fc; color: #0a2540; } 34%, 100% { background: transparent; color: #5a6a83; } }
+@keyframes annualPlanStep2 { 0%, 33% { background: transparent; color: #5a6a83; } 34%, 64% { background: #eaf1fc; color: #0a2540; } 65%, 100% { background: transparent; color: #5a6a83; } }
+@keyframes annualPlanStep3 { 0%, 64% { background: transparent; color: #5a6a83; } 65%, 99% { background: #eaf1fc; color: #0a2540; } 100% { background: transparent; color: #5a6a83; } }
+@keyframes annualPlanStepB1 { 0%, 33% { background: #1f55ad; color: #fff; } 34%, 100% { background: #e3e9f2; color: #5a6a83; } }
+@keyframes annualPlanStepB2 { 0%, 33% { background: #e3e9f2; color: #5a6a83; } 34%, 64% { background: #1f55ad; color: #fff; } 65%, 100% { background: #e3e9f2; color: #5a6a83; } }
+@keyframes annualPlanStepB3 { 0%, 64% { background: #e3e9f2; color: #5a6a83; } 65%, 99% { background: #1f55ad; color: #fff; } 100% { background: #e3e9f2; color: #5a6a83; } }
+
+
+.annual-plan-motion[data-paused="true"] .motion-svg *,
+.annual-plan-motion[data-paused="true"] .motion-steps *,
+.annual-plan-motion[data-paused="true"] .motion-steps .ms b { animation-play-state:paused; }
+@media (max-width:720px) {
+ .annual-plan-motion .motion-heading { align-items:flex-start; flex-direction:column; }
+ .annual-plan-motion .motion-card { padding:12px; }
+ .annual-plan-motion .motion-steps { grid-template-columns:minmax(0,1fr); gap:8px; }
+ .annual-plan-motion .ms { padding:10px; }
+}
+@media (prefers-reduced-motion:reduce) {
+ .annual-plan-motion .motion-svg *, .annual-plan-motion .motion-steps * { animation:none; }
+ .annual-plan-motion .motion-control { display:none; }
+}
