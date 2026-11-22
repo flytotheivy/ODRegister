@@ -1,7 +1,8 @@
+import SiteHeader,{SiteFooter} from './SiteHeader';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchHealth, type HealthResult } from './api';
-import { dictionaries, locales, resolveLocale, type Locale } from './i18n';
-import './style.css';
+import { dictionaries, resolveLocale, type Locale } from './i18n';
+import './styles/index.css';
 import Access from './Access';
 import PublicPortal from './PublicPortal';
 import DraftPortal from './DraftPortal';
@@ -11,7 +12,6 @@ import MonitoringPortal from './MonitoringPortal';
 import RegistryPortal from './RegistryPortal';
 import {authMessages} from './authMessages';
 
-const languageNames: Record<Locale, string> = {en: 'English', 'sr-Latn': 'Srpski (latinica)', 'sr-Cyrl': 'Српски (ћирилица)'};
 export default function App() {
   if(location.pathname === "/admin") return <MonitoringPortal/>;
   if(location.pathname === "/admin/datasets") return <InternalPortal/>;
@@ -47,10 +47,7 @@ function Foundation() {
   return <>
     <a className="skip" href="#main">{t.skip}</a>
     <div className="site">
-      <header>
-        <a className="brand" href={`?lang=${locale}`}><span className="brand-mark" aria-hidden="true">OD<span/></span>{t.brand}</a>
-        <nav aria-label={t.language} className="languages">{locales.map(lang => <button key={lang} type="button" lang={lang} aria-pressed={locale === lang} onClick={() => setLocale(lang)}>{languageNames[lang]}</button>)}</nav>
-      </header>
+      <SiteHeader locale={locale} onLocale={setLocale}/>
       <main id="main">
         <div className="context"><span className="tag">{t.preview}</span><span className="context-line"/></div>
         <div className="hero">
@@ -58,22 +55,22 @@ function Foundation() {
             <p className="eyebrow">{t.eyebrow}</p>
             <h1 id="title">{t.title}</h1>
             <p className="lead">{t.introduction}</p>
-            <p className="scope">{t.scope}</p><a className="access-link" href={`/account/request?lang=${locale}`}>{t.accessTitle} ↗</a><a className="access-link secondary" href={`/sign-in?lang=${locale}`}>{authMessages[locale].login}</a>
+            <p className="scope">{t.scope}</p><a className="access-link" href={`/account/request?lang=${locale}`}>{t.accessTitle}</a><a className="access-link secondary" href={`/sign-in?lang=${locale}`}>{authMessages[locale].login}</a>
           </section>
           <section className="connection" aria-labelledby="connection-heading">
-            <div className="connection-top"><span className="mini-rule"/><span aria-hidden="true">↗</span></div>
+            <div className="connection-top"><span className="mini-rule"/></div>
             <h2 id="connection-heading">{t.statusHeading}</h2>
             <p className="panel-intro">{t.statusIntro}</p>
             <div className={`health ${ready ? 'is-ready' : loading ? 'is-loading' : 'is-unavailable'}`} role="status" aria-label={t.statusLabel} aria-live="polite" aria-busy={loading} data-state={result.kind}>
               <span className="health-dot" aria-hidden="true"/><div><strong>{status}</strong>{!loading && <p>{hint}</p>}</div>
             </div>
             <dl className="checks"><div><dt>{t.api}</dt><dd>{ready ? t.ok : t.unknown}</dd></div><div><dt>{t.database}</dt><dd>{ready ? t.ok : t.unknown}</dd></div></dl>
-            <button className="refresh" type="button" disabled={loading} onClick={() => void refresh()}>{loading ? t.loading : t.refresh}<span aria-hidden="true">↗</span></button>
+            <button className="refresh" type="button" disabled={loading} onClick={() => void refresh()}>{loading ? t.loading : t.refresh}</button>
           </section>
         </div>
         <section className="steps" aria-labelledby="steps-title"><h2 id="steps-title">{t.stepsHeading}</h2><div className="step-grid">{steps.map(([title, body], i) => <article key={i}><span className="step-number">0{i + 1}</span><h3>{title}</h3><p>{body}</p><span className="later">{i===0?<a href={`/account/request?lang=${locale}`}>{t.accessTitle}</a>:t.later}</span></article>)}</div></section>
       </main>
-      <footer><span>{t.footer}</span><span>{t.draft}</span></footer>
+      <SiteFooter locale={locale}/>
     </div>
   </>;
 }

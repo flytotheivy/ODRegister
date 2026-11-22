@@ -1,0 +1,10 @@
+export type PublishedStats={year:number;plans:number;institutions:number;datasets:number;themes:{code:string;labels:Record<string,string>;value:number}[];quarters:number[]};
+export function publishedStats(value:unknown,year:number):PublishedStats{
+ const x=value as {schema_version:string;feed_type:string;year:number;record_count:number;plan_count:number;institution_count:number;records:{dataset_id:string;plan_id:string;institution_id:string;theme_code:string;theme_labels:Record<string,string>;planned_quarter:number|null}[]};
+ const count=(n:unknown)=>Number.isSafeInteger(n)&&Number(n)>=0;
+ if(!x||x.schema_version!=='2.0'||x.feed_type!=='public'||x.year!==year||![x.record_count,x.plan_count,x.institution_count].every(count)||!Array.isArray(x.records)||x.records.length!==x.record_count)throw new Error('INVALID_PUBLIC_STATS');
+ const themes=new Map<string,PublishedStats['themes'][number]>(),quarters=[0,0,0,0,0],ids=new Set(),plans=new Set(),institutions=new Set();
+ for(const r of x.records){if(!r||!['dataset_id','plan_id','institution_id','theme_code'].every(k=>typeof r[k as keyof typeof r]==='string'&&r[k as keyof typeof r])||ids.has(r.dataset_id)||!r.theme_labels||!['en','sr-Latn','sr-Cyrl'].every(l=>typeof r.theme_labels[l]==='string'&&r.theme_labels[l].trim())||!(r.planned_quarter===null||Number.isInteger(r.planned_quarter)&&r.planned_quarter>=1&&r.planned_quarter<=4))throw new Error('INVALID_PUBLIC_STATS');ids.add(r.dataset_id);plans.add(r.plan_id);institutions.add(r.institution_id);quarters[r.planned_quarter===null?4:r.planned_quarter-1]++;const old=themes.get(r.theme_code);if(old)old.value++;else themes.set(r.theme_code,{code:r.theme_code,labels:r.theme_labels,value:1});}
+ if(plans.size!==x.plan_count||institutions.size!==x.institution_count)throw new Error('INVALID_PUBLIC_STATS');
+ return {year,plans:x.plan_count,institutions:x.institution_count,datasets:x.record_count,themes:[...themes.values()].sort((a,b)=>b.value-a.value||a.code.localeCompare(b.code)),quarters};
+}

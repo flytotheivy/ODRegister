@@ -1,0 +1,10 @@
+import {useEffect,useState} from 'react';
+import type {Locale} from './i18n';
+import {publishedStats,type PublishedStats} from './publicStats';
+import {BarChart} from './Charts';
+import {uiMessages} from './SiteHeader';
+export default function PublicStatistics({year,locale}:{year:number;locale:Locale}){
+ const [data,setData]=useState<PublishedStats|null>(null),[error,setError]=useState(false),[attempt,setAttempt]=useState(0);const t=uiMessages[locale];
+ useEffect(()=>{let disposed=false;const c=new AbortController();setData(null);setError(false);const timeout=setTimeout(()=>c.abort(),15000);void(async()=>{try{const response=await fetch('/api/public/feeds/'+year+'.json',{signal:c.signal,credentials:'omit',cache:'no-store',headers:{Accept:'application/json'}});if(!response.ok)throw new Error('HTTP');const next=publishedStats(await response.json(),year);if(!c.signal.aborted)setData(next);}catch{if(!disposed)setError(true);}finally{clearTimeout(timeout);}})();return()=>{disposed=true;c.abort();clearTimeout(timeout);};},[year,attempt]);
+ return <section className="published-statistics" aria-labelledby="published-stats-title"><div className="section-heading"><h2 id="published-stats-title">{t.statistics}</h2><span className="year-tag">{year}</span></div><p className="scope">{t.scope}</p>{error?<div role="alert"><p>{t.failed}</p><button className="outline-button" onClick={()=>setAttempt(x=>x+1)}>{t.retry}</button></div>:!data?<p role="status">{t.loading}</p>:<><dl className="public-kpis">{[[t.plansCount,data.plans],[t.datasets,data.datasets],[t.institutions,data.institutions]].map(([label,n])=><div key={label}><dt>{label}</dt><dd>{Number(n).toLocaleString(locale)}</dd></div>)}</dl>{!data.datasets?<p>{t.empty}</p>:<div className="chart-grid"><BarChart title={t.themes} rows={data.themes.map(x=>({label:x.labels[locale],value:x.value}))} tableLabel={t.table}/><BarChart title={t.quarter} rows={data.quarters.map((n,i)=>({label:i===4?t.unspecified:'Q'+(i+1),value:n}))} tableLabel={t.table}/></div>}</>}</section>;
+}

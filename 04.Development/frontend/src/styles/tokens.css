@@ -1,0 +1,77 @@
+/* eUprava Design System(EDS) 1.2.0 준용 토큰
+   근거: 03.Development Plan/UI_EDS_REBUILD_PLAN_KO_v0.3_20261122.md 4장
+   EDS 원값을 이름으로 남기고, 화면은 역할 토큰(--c-*)만 사용한다. */
+:root {
+  /* EDS core·palette 원값 */
+  --eds-core-primary: #003964;
+  --eds-core-secondary: #E31E30;
+  --eds-primary: #36618E;
+  --eds-on-primary-container: #1A4975;
+  --eds-primary-container: #D1E4FF;
+  --eds-primary-40: #0561A4;
+  --eds-primary-95: #EAF1FF;
+  --eds-secondary-40: #C00020;
+  --eds-secondary-95: #FFEDEB;
+  --eds-green-800: #52703D;
+  --eds-green-900: #3F552E;
+  --eds-green-50: #F4FAF1;
+  --eds-orange-900: #694A25;
+  --eds-orange-50: #FFF7EE;
+  --eds-grey-100: #EEF1F4;
+  --eds-grey-200: #E6EBEF;
+  --eds-grey-300: #D3D9DF;
+  --eds-background: #F8F9FF;
+  --eds-on-surface: #191C20;
+  --eds-on-surface-variant: #41484D;
+  --eds-outline: #71787E;
+
+  /* 역할 토큰 */
+  --c-brand: var(--eds-core-primary);
+  --c-topbar: var(--eds-primary);
+  --c-topbar-active: var(--eds-on-primary-container);
+  --c-action: var(--eds-primary-40);
+  --c-action-hover: var(--eds-on-primary-container);
+  --c-action-container: var(--eds-primary-container);
+  --c-info-bg: var(--eds-primary-95);
+  --c-accent: var(--eds-core-secondary);
+  --c-error: var(--eds-secondary-40);
+  --c-error-bg: var(--eds-secondary-95);
+  --c-success-text: var(--eds-green-800);
+  --c-success-strong: var(--eds-green-900);
+  --c-success-bg: var(--eds-green-50);
+  --c-warning-text: var(--eds-orange-900);
+  --c-warning-bg: var(--eds-orange-50);
+  --c-bg: var(--eds-background);
+  --c-surface: #FFFFFF;
+  --c-surface-muted: var(--eds-grey-100);
+  --c-text: var(--eds-on-surface);
+  --c-text-muted: var(--eds-on-surface-variant);
+  --c-outline: var(--eds-outline);
+  --c-line: var(--eds-grey-300);
+  --c-line-soft: var(--eds-grey-200);
+
+  /* 서체: EDS 지정 Orto RNIDS(CF-22 확인 전 미탑재 → Arial) */
+  --font: "Orto RNIDS", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --fs-display: 2.25rem;   /* 36 */
+  --fs-h1: 2rem;           /* 32 */
+  --fs-h2: 1.625rem;       /* 26 */
+  --fs-h3: 1.375rem;       /* 22 */
+  --fs-title: 1.125rem;    /* 18, 라벨·표 머리 */
+  --fs-body: 1.125rem;     /* 18 */
+  --fs-small: 1rem;        /* 16 */
+  --fs-meta: 0.875rem;     /* 14, 최소 */
+  --lh-body: 1.6;
+  --lh-heading: 1.25;
+
+  /* 간격(8px 격자)·형태 */
+  --s-1: 4px; --s-2: 8px; --s-3: 16px; --s-4: 24px; --s-5: 32px; --s-6: 48px; --s-7: 64px;
+  --radius: 4px;
+  --radius-pill: 999px;
+  --control-h: 48px;
+  --control-h-lg: 56px;
+  --container: 1200px;
+  --gutter: 24px;
+  --shadow-header: 0 2px 8px rgba(0, 57, 100, .10);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, .08);
+  --focus: 0 0 0 3px var(--c-surface), 0 0 0 6px var(--c-action);
+}

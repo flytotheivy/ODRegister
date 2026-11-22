@@ -1,11 +1,13 @@
+import SiteHeader,{SiteFooter,uiMessages} from './SiteHeader';
+import {Breadcrumbs,Chip} from './Eds';
+import {homeMessages} from './homeMessages';
 import {displayStamp} from './cyclesApi';
 import {useEffect, useRef, useState, type FormEvent} from 'react';
 import {accessFetch, AccessError, institutionList, requestStatus, type Institution, type RequestStatus} from './accessApi';
 import {accessMessages} from './accessMessages';
-import {dictionaries, locales, resolveLocale, type Locale} from './i18n';
-import './style.css';
+import {dictionaries, resolveLocale, type Locale} from './i18n';
+import './styles/index.css';
 import {authMessages} from './authMessages';
-const languageNames: Record<Locale,string> = {en:'English', 'sr-Latn':'Srpski (latinica)', 'sr-Cyrl':'Српски (ћирилица)'};
 export default function Access() {
  const [locale, setLocale] = useState<Locale>(()=>resolveLocale(new URLSearchParams(location.search).get('lang')));
  const [mode, setMode] = useState(location.pathname === '/account/status' ? 'status' : 'request');
@@ -47,10 +49,10 @@ export default function Access() {
  }
  const statusLabel = result ? {pending:t.pendingLabel,approved:t.approved,rejected:t.rejected,deactivated:t.deactivated}[result.status] : '';
  const stamp = (value:string) => displayStamp(value,locale);
- return <><a className="skip" href="#main">{base.skip}</a><div className="site"><header><a className="brand" href={url('/')}><span className="brand-mark" aria-hidden="true">OD<span/></span>{base.brand}</a><nav className="languages" aria-label={base.language}>{locales.map(lang=><button key={lang} type="button" lang={lang} aria-pressed={locale===lang} onClick={()=>setLocale(lang)}>{languageNames[lang]}</button>)}</nav></header>
- <main id="main" className="access-main"><nav className="access-nav" aria-label={t.eyebrow}><a href={url('/')}>{t.back}</a><a href={url(mode==='request'?'/account/status':'/account/request')}>{mode==='request'?t.statusTitle:t.newRequest}</a></nav><div className="access-layout"><aside className="access-intro"><p className="eyebrow">{t.eyebrow}</p><h1>{t.title}</h1><p className="lead">{t.intro}</p><p className="access-notice">{t.noEmail}</p><ol className="access-process"><li><span>01</span>{t.requestTitle}</li><li><span>02</span>{t.pendingLabel}</li><li><span>03</span>{t.approved}</li></ol><p className="scope">{base.draft}</p></aside>
+ return <><a className="skip" href="#main">{base.skip}</a><div className="site"><SiteHeader locale={locale} onLocale={setLocale}/>
+ <main id="main" className="access-main"><Breadcrumbs label={homeMessages[locale].crumbs} items={[[uiMessages[locale].home,url('/')],[mode==='request'?t.requestTitle:t.statusTitle]]}/><div className="access-layout"><aside className="access-intro"><p className="eyebrow">{t.eyebrow}</p><h1>{t.title}</h1><p className="lead">{t.intro}</p><p className="access-notice">{t.noEmail}</p><ol className="access-process"><li><span>01</span>{t.requestTitle}</li><li><span>02</span>{t.pendingLabel}</li><li><span>03</span>{t.approved}</li></ol><p className="scope">{base.draft}</p></aside>
  <section className="access-card" aria-labelledby="access-heading"><p className="eyebrow">{mode==='request'?'01 / 03':'02 / 03'}</p><h2 id="access-heading">{mode==='request'?t.requestTitle:t.statusTitle}</h2>
- {result && <section className="access-result" data-status={result.status} aria-live="polite"><h3 ref={resultRef} tabIndex={-1}>{result.status==='pending'?t.pending:statusLabel}</h3><span className="status-badge">{statusLabel}</span>{result.status==='pending'&&<p>{t.pendingHint}</p>}{result.domain_review&&<p>{result.domain_review==='matched'?t.matched:t.unconfirmed}</p>}<dl>{result.institution_name&&<><dt>{t.institution}</dt><dd>{result.institution_name}</dd></>}{result.email&&<><dt>{t.email}</dt><dd>{result.email}</dd></>}<dt>{t.requested}</dt><dd>{stamp(result.requested_at)}</dd>{result.reviewed_at&&<><dt>{t.reviewed}</dt><dd>{stamp(result.reviewed_at)}</dd></>}{result.decision_reason&&<><dt>{t.reason}</dt><dd>{result.decision_reason}</dd></>}</dl><p className="scope">{t.next}</p>{result.status==='approved'&&<a className="access-link" href={url('/sign-in')}>{authMessages[locale].login}</a>}</section>}
+ {result && <section className="access-result" data-status={result.status} aria-live="polite"><h3 ref={resultRef} tabIndex={-1}>{result.status==='pending'?t.pending:statusLabel}</h3><Chip tone={result.status==='approved'?'success':result.status==='pending'?'warning':result.status==='rejected'?'error':'neutral'}>{statusLabel}</Chip>{result.status==='pending'&&<p>{t.pendingHint}</p>}{result.domain_review&&<p>{result.domain_review==='matched'?t.matched:t.unconfirmed}</p>}<dl>{result.institution_name&&<><dt>{t.institution}</dt><dd>{result.institution_name}</dd></>}{result.email&&<><dt>{t.email}</dt><dd>{result.email}</dd></>}<dt>{t.requested}</dt><dd>{stamp(result.requested_at)}</dd>{result.reviewed_at&&<><dt>{t.reviewed}</dt><dd>{stamp(result.reviewed_at)}</dd></>}{result.decision_reason&&<><dt>{t.reason}</dt><dd>{result.decision_reason}</dd></>}</dl><p className="scope">{t.next}</p>{result.status==='approved'&&<a className="access-link" href={url('/sign-in')}>{authMessages[locale].login}</a>}</section>}
  {mode==='request'&&<><p className="synthetic-note">{t.synthetic}</p><form className="institution-search" onSubmit={e=>{e.preventDefault();void search(searchRef.current?.value||'');}}><label htmlFor="institution-search">{t.find}</label><div><input id="institution-search" ref={searchRef} type="search" maxLength={100} placeholder={t.searchPlaceholder}/><button type="submit" disabled={listState==='loading'}>{t.search}</button></div></form><p className="list-info" role="status">{listState==='loading'?base.loading:listState==='error'?t.listFailed:more?t.more:items.length===0?t.empty:''}</p></>}
  <form className="access-form" onSubmit={e=>void submit(e)} aria-busy={busy}><p className="scope">{mode==='status'?t.statusHint:t.required}</p>
  {mode==='request'&&<><label htmlFor="institution">{t.institution}</label><select id="institution" name="institution_id" required disabled={listState!=='ready'||busy} value={selection} onChange={e=>setSelection(e.target.value)}><option value="">{t.select}</option>{items.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</select><label htmlFor="name">{t.name}</label><input id="name" name="name" required maxLength={150} autoComplete="name" disabled={busy}/></>}
@@ -58,6 +60,7 @@ export default function Access() {
  <label htmlFor="password">{t.password}</label><input id="password" name="password" type="password" required minLength={15} maxLength={128} autoComplete={mode==='request'?'new-password':'current-password'} aria-describedby="password-hint" disabled={busy}/><p id="password-hint" className="field-hint">{t.passwordHint}</p>
  {mode==='request'&&<><label htmlFor="confirm">{t.confirm}</label><input id="confirm" name="confirm" type="password" required minLength={15} maxLength={128} autoComplete="new-password" disabled={busy}/></>}
  {error&&<p role="alert" className="access-error">{errors[error]||t.unavailable}</p>}
- <button type="submit" className="refresh" disabled={busy||(mode==='request'&&(listState!=='ready'||!selection))}>{busy?(mode==='request'?t.submitting:t.checking):mode==='request'?t.submit:t.viewStatus}<span aria-hidden="true">↗</span></button></form>
- </section></div></main><footer><span>{base.footer}</span><span>{base.draft}</span></footer></div></>;
+ <button type="submit" className="refresh" disabled={busy||(mode==='request'&&(listState!=='ready'||!selection))}>{busy?(mode==='request'?t.submitting:t.checking):mode==='request'?t.submit:t.viewStatus}</button></form>
+ <p className="form-switch">{mode==='request'?<>{homeMessages[locale].statusTitle} <a href={url('/account/status')}>{homeMessages[locale].statusLink}</a></>:<a href={url('/account/request')}>{t.newRequest}</a>}</p>
+ </section></div></main><SiteFooter locale={locale}/></div></>;
 }

@@ -10,6 +10,8 @@ export async function authFetch(path:string,payload?:object,csrf?:string,signal?
  }catch(error){if(error instanceof AuthError)throw error;throw new AuthError('SERVICE_UNAVAILABLE');}
  finally{clearTimeout(timer);signal?.removeEventListener('abort',stop);}
 }
+/** 로그인 성공 직후 이동할 화면(DEV_SPEC §42). 기관은 내 계획, 관리자는 기존 계정 심사 화면 */
+export function postLoginPath(role:Profile['role']):string{return role==='institution_user'?'/my-plans':'/admin/accounts';}
 export function profile(value:unknown):Profile{
  const v=value as Profile;if(!v||typeof v.id!=='string'||typeof v.name!=='string'||!['institution_user','ADMIN_MPALSG','ADMIN_ITE'].includes(v.role)||!/^([0-9a-f]{64})$/.test(v.csrf_token)||(v.institution_id!==null&&typeof v.institution_id!=='string'))throw new AuthError('SERVICE_UNAVAILABLE');return v;
 }

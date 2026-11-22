@@ -1,0 +1,6 @@
+/* EDS 준용 스타일 진입점(순서 고정): 토큰 → 기본 요소 → 골격 → 부품 → 화면 */
+@import './tokens.css';
+@import './base.css';
+@import './layout.css';
+@import './components.css';
+@import './screens.css';
