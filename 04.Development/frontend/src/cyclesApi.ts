@@ -9,4 +9,7 @@ function validTheme(v:unknown):v is Theme{const t=v as Theme;return !!t&&uuid(t.
 export function cyclePage(v:unknown):CyclePage{const x=v as CyclePage;if(!x||!Array.isArray(x.items)||!x.items.every(validCycle)||!Number.isSafeInteger(x.active_register_count)||x.active_register_count<0||(x.next_cursor!==null&&!Number.isInteger(x.next_cursor)))throw new AuthError('SERVICE_UNAVAILABLE');return x;}
 export function cycleDetail(v:unknown):CycleDetail{const x=v as CycleDetail;if(!validCycle(x)||typeof x.has_plans!=='boolean'||!Number.isInteger(x.institution_count)||x.institution_count<0||!Array.isArray(x.themes)||!x.themes.every(t=>validTheme(t)&&typeof t.active==='boolean'))throw new AuthError('SERVICE_UNAVAILABLE');return x;}
 export function themeCatalogue(v:unknown):Theme[]{const x=v as {items:Theme[]};if(!x||!Array.isArray(x.items)||!x.items.every(validTheme))throw new AuthError('SERVICE_UNAVAILABLE');return x.items;}
-export function displayInstant(value:string,zone:string,locale:string){try{return new Intl.DateTimeFormat(locale==='en'?'en-GB':locale,{dateStyle:'medium',timeStyle:'long',timeZone:zone}).format(new Date(value));}catch{return value+' ('+zone+')';}}
+export const SERVICE_TIME_ZONE='Europe/Belgrade';
+const STAMP_OPTIONS:Intl.DateTimeFormatOptions={day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZoneName:'short'};
+export function displayInstant(value:string,zone:string,locale:string){try{return new Intl.DateTimeFormat(locale==='en'?'en-GB':locale,{...STAMP_OPTIONS,timeZone:zone}).format(new Date(value));}catch{return value+' ('+zone+')';}}
+export function displayStamp(value:string,locale:string){return displayInstant(value,SERVICE_TIME_ZONE,locale);}

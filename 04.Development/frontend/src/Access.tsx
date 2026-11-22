@@ -1,3 +1,4 @@
+import {displayStamp} from './cyclesApi';
 import {useEffect, useRef, useState, type FormEvent} from 'react';
 import {accessFetch, AccessError, institutionList, requestStatus, type Institution, type RequestStatus} from './accessApi';
 import {accessMessages} from './accessMessages';
@@ -45,7 +46,7 @@ export default function Access() {
   finally {clearTimeout(timer);form.querySelectorAll<HTMLInputElement>('input[type=password]').forEach(input=>{input.value='';});sending.current=false;setBusy(false);}
  }
  const statusLabel = result ? {pending:t.pendingLabel,approved:t.approved,rejected:t.rejected,deactivated:t.deactivated}[result.status] : '';
- const stamp = (value:string) => new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : locale,{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Belgrade'}).format(new Date(value));
+ const stamp = (value:string) => displayStamp(value,locale);
  return <><a className="skip" href="#main">{base.skip}</a><div className="site"><header><a className="brand" href={url('/')}><span className="brand-mark" aria-hidden="true">OD<span/></span>{base.brand}</a><nav className="languages" aria-label={base.language}>{locales.map(lang=><button key={lang} type="button" lang={lang} aria-pressed={locale===lang} onClick={()=>setLocale(lang)}>{languageNames[lang]}</button>)}</nav></header>
  <main id="main" className="access-main"><nav className="access-nav" aria-label={t.eyebrow}><a href={url('/')}>{t.back}</a><a href={url(mode==='request'?'/account/status':'/account/request')}>{mode==='request'?t.statusTitle:t.newRequest}</a></nav><div className="access-layout"><aside className="access-intro"><p className="eyebrow">{t.eyebrow}</p><h1>{t.title}</h1><p className="lead">{t.intro}</p><p className="access-notice">{t.noEmail}</p><ol className="access-process"><li><span>01</span>{t.requestTitle}</li><li><span>02</span>{t.pendingLabel}</li><li><span>03</span>{t.approved}</li></ol><p className="scope">{base.draft}</p></aside>
  <section className="access-card" aria-labelledby="access-heading"><p className="eyebrow">{mode==='request'?'01 / 03':'02 / 03'}</p><h2 id="access-heading">{mode==='request'?t.requestTitle:t.statusTitle}</h2>
